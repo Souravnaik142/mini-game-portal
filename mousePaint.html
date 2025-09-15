@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Mouse Paint</title>
+<style>
+body{font-family:Arial;margin:0;background:#f7fbff}
+header{background:#4aa96c;color:#fff;padding:12px;text-align:center}
+#canvas{border:2px solid #e6eef1;border-radius:8px;display:block;margin:12px auto}
+#controls{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.palette{display:flex;gap:6px}
+.color{width:32px;height:32px;border-radius:6px;cursor:pointer;border:2px solid #fff}
+</style>
+</head>
+<body>
+<header><strong>Mouse Paint</strong></header>
+<canvas id="canvas" width="800" height="450"></canvas>
+<div id="controls">
+  <div class="palette" id="palette"></div>
+  <input id="size" type="range" min="2" max="50" value="8" />
+  <button id="clear">Clear</button>
+  <button id="save">Save PNG</button>
+</div>
+<script>
+(function(){
+  const colors=['#000000','#ff4d4d','#ffb74d','#ffd54f','#ffff8d','#a5d6a7','#66bb6a','#4fc3f7','#8c9eff','#b39ddb','#ffffff'];
+  const canvas=document.getElementById('canvas');const ctx=canvas.getContext('2d');
+  let color=colors[1];let drawing=false;let last={x:0,y:0};let brush=8;
+  const palette=document.getElementById('palette');
+  colors.forEach(c=>{const d=document.createElement('div');d.className='color';d.style.background=c;d.addEventListener('click',()=>color=c);palette.appendChild(d)});
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);
+  function pos(e){const r=canvas.getBoundingClientRect();const clientX=e.touches?e.touches[0].clientX:e.clientX;const clientY=e.touches?e.touches[0].clientY:e.clientY;return{x:Math.round((clientX-r.left)*(canvas.width/r.width)),y:Math.round((clientY-r.top)*(canvas.height/r.height))}}
+  canvas.addEventListener('mousedown',e=>{drawing=true;last=pos(e)});
+  window.addEventListener('mouseup',()=>drawing=false);
+  canvas.addEventListener('mousemove',e=>{if(!drawing)return;const p=pos(e);ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=color;ctx.lineWidth=brush;ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p});
+  canvas.addEventListener('touchstart',e=>{drawing=true;last=pos(e)},{passive:true});
+  canvas.addEventListener('touchend',()=>drawing=false);
+  canvas.addEventListener('touchmove',e=>{if(!drawing)return;const p=pos(e);ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=color;ctx.lineWidth=brush;ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p},{passive:true});
+  document.getElementById('size').addEventListener('input',e=>brush=parseInt(e.target.value,10));
+  document.getElementById('clear').addEventListener('click',()=>ctx.clearRect(0,0,canvas.width,canvas.height));
+  document.getElementById('save').addEventListener('click',()=>{const a=document.createElement('a');a.download='kids-paint.png';a.href=canvas.toDataURL();a.click()});
+})();
+</script>
+</body>
+</html>

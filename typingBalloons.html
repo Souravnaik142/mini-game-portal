@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Typing Balloons</title>
+<style>
+body{font-family:Arial;margin:0;background:linear-gradient(#e6f7ff,#fff)}
+header{background:#4a90e2;color:#fff;padding:12px;text-align:center}
+#board{background:#fff;border-radius:8px;border:2px solid #e6eef1;width:100%;height:420px;position:relative;overflow:hidden;margin:12px auto}
+</style>
+</head>
+<body>
+<header><strong>Typing Balloons</strong> — press the letter on the balloon to pop it</header>
+<div style="max-width:900px;margin:8px auto;text-align:center">
+  <div style="display:flex;gap:10px;justify-content:center;margin-bottom:8px">
+    <div>Score: <span id="score">0</span></div>
+    <div>Misses: <span id="misses">0</span>/5</div>
+    <div>Level: <span id="level">1</span></div>
+    <button id="start">Start</button>
+  </div>
+  <div id="board" tabindex="0"></div>
+</div>
+<script>
+(function(){
+  const board=document.getElementById('board');const start=document.getElementById('start');
+  const scoreEl=document.getElementById('score');const missesEl=document.getElementById('misses');const levelEl=document.getElementById('level');
+  let running=false,score=0,misses=0,level=1,balloons=[],spawnInterval=1200,gameLoop=null,spawnLoop=null;
+  const colors=['#f44336','#ff9800','#ffeb3b','#8bc34a','#00bcd4','#9c27b0','#3f51b5'];
+  function create(letter){const el=document.createElement('div');el.style.cssText='position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;width:72px;height:72px';el.style.background=colors[Math.floor(Math.random()*colors.length)];el.textContent=letter;const left=Math.floor(Math.random()*(board.clientWidth-72));const top=board.clientHeight;el.style.left=left+'px';el.style.top=top+'px';board.appendChild(el);return{el,letter,x:left,y:top,speed:1+Math.random()*1.5,size:72}}
+  function spawn(){const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';const l=letters[Math.floor(Math.random()*letters.length)];balloons.push(create(l))}
+  function update(){balloons.forEach((b,i)=>{b.y-=b.speed+0.5*(level*0.05);b.el.style.top=b.y+'px';if(b.y+b.size<0){misses++;missesEl.textContent=misses;board.removeChild(b.el);balloons[i]=null;if(misses>=5){stop();alert('Game over! Score: '+score)}}});balloons=balloons.filter(Boolean)}
+  function onKey(e){if(!running)return;const key=e.key.toUpperCase();let found=-1,minY=Infinity;for(let i=0;i<balloons.length;i++){if(balloons[i].letter===key&&balloons[i].y<minY){minY=balloons[i].y;found=i}}if(found>=0){const b=balloons[found];board.removeChild(b.el);balloons.splice(found,1);score+=10;scoreEl.textContent=score;if(score%100===0){level++;levelEl.textContent=level;spawnInterval=Math.max(400,spawnInterval-100);clearInterval(spawnLoop);spawnLoop=setInterval(spawn,spawnInterval)}}else{misses++;missesEl.textContent=misses;if(misses>=5){stop();alert('Game over! Score: '+score)}}}
+  function startGame(){if(running)return;running=true;score=0;misses=0;level=1;spawnInterval=1200;scoreEl.textContent=0;missesEl.textContent=0;levelEl.textContent=1;board.focus();spawnLoop=setInterval(spawn,spawnInterval);gameLoop=setInterval(update,30)}
+  function stop(){running=false;clearInterval(spawnLoop);clearInterval(gameLoop);balloons.forEach(b=>board.contains(b.el)&&board.removeChild(b.el));balloons=[]}
+  start.addEventListener('click',startGame);window.addEventListener('keydown',onKey);
+})();
+</script>
+</body>
+</html>

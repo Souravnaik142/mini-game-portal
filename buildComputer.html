@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Build a Computer</title>
+<style>
+body{font-family:Arial;margin:0;background:#fff}
+header{background:#f57c00;color:#fff;padding:12px;text-align:center}
+.wrap{display:flex;gap:12px;padding:12px}
+.palette{width:180px;background:#f9fafb;padding:10px;border-radius:8px}
+.part{padding:8px;border-radius:8px;background:#fff;margin-bottom:10px;cursor:grab;border:2px dashed transparent;text-align:center}
+.workspace{flex:1;background:#f9fafb;padding:12px;border-radius:8px;display:flex;flex-direction:column;align-items:center}
+.dropzone{width:320px;height:70px;border:2px dashed #cbd5e1;border-radius:10px;margin:10px 0;display:flex;align-items:center;justify-content:center;background:#fff}
+.dropzone.filled{border-color:#4caf50;background:#e8f5e9}
+.hint{color:#6b7280;margin-top:8px}
+</style>
+</head>
+<body>
+<header><strong>Build a Computer</strong></header>
+<div class="wrap">
+  <div class="palette">
+    <h4>Parts</h4>
+    <div id="parts">
+      <div class="part" draggable="true" data-part="monitor">🖥️ Monitor</div>
+      <div class="part" draggable="true" data-part="keyboard">⌨️ Keyboard</div>
+      <div class="part" draggable="true" data-part="mouse">🖱️ Mouse</div>
+      <div class="part" draggable="true" data-part="cpu">🖧 CPU/Tower</div>
+    </div>
+    <div style="margin-top:8px"><button id="reset">Reset</button></div>
+  </div>
+  <div class="workspace">
+    <h3>Assemble Here</h3>
+    <div class="dropzone" data-accept="monitor">Monitor slot</div>
+    <div class="dropzone" data-accept="cpu">CPU/Tower slot</div>
+    <div class="dropzone" data-accept="keyboard">Keyboard slot</div>
+    <div class="dropzone" data-accept="mouse">Mouse slot</div>
+    <div class="hint" id="status">Drag each part into its matching slot.</div>
+  </div>
+</div>
+<script>
+(function(){
+  const parts=document.querySelectorAll('.part');const zones=document.querySelectorAll('.dropzone');const status=document.getElementById('status');const reset=document.getElementById('reset');
+  parts.forEach(p=>{p.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',p.dataset.part);p.classList.add('dragging')});p.addEventListener('dragend',()=>p.classList.remove('dragging'))});
+  zones.forEach(z=>{z.addEventListener('dragover',e=>e.preventDefault());z.addEventListener('drop',e=>{e.preventDefault();const partName=e.dataTransfer.getData('text/plain');if(z.dataset.accept===partName){if(z._placed)z.removeChild(z._placed);const el=document.querySelector(`.part[data-part="${partName}"]`);z.appendChild(el);el.style.cursor='default';el.setAttribute('draggable','false');z.classList.add('filled');z._placed=el;checkWin()}else{z.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:220});}})});
+  function checkWin(){const all=Array.from(zones).every(z=>z._placed);if(all){status.textContent='Great job! 🎉 You assembled the computer!';status.style.color='#2e8b57'}}
+  reset.addEventListener('click',()=>{zones.forEach(z=>{if(z._placed){document.getElementById('parts').appendChild(z._placed);z._placed.setAttribute('draggable','true');z._placed.style.cursor='grab';z._placed=null}z.classList.remove('filled')});status.textContent='Drag each part into its matching slot.';status.style.color=''});
+})();
+</script>
+</body>
+</html>
