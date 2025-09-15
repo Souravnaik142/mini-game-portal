@@ -1,0 +1,25 @@
+
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Letter Tracer</title>
+<style>body{font-family:Arial;text-align:center;padding:12px;background:#f7fbff}canvas{border:2px solid #e6eef1;border-radius:8px}#letter{font-size:96px;margin:8px}</style>
+</head><body>
+<h2>Letter Tracer</h2>
+<div id="letter">A</div>
+<canvas id="c" width="600" height="300"></canvas><br>
+<button id="new">New Letter</button><button id="clear">Clear</button>
+<script>
+const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const letterEl=document.getElementById('letter');
+document.getElementById('new').onclick=()=> letterEl.textContent=letters[Math.floor(Math.random()*letters.length)];
+const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
+ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=8;ctx.strokeStyle='#2e8b57';
+let drawing=false, last;
+function getPos(e){const r=canvas.getBoundingClientRect();const x=e.touches?e.touches[0].clientX:e.clientX;const y=e.touches?e.touches[0].clientY:e.clientY;return{x:(x-r.left)*(canvas.width/r.width), y:(y-r.top)*(canvas.height/r.height)}}
+canvas.addEventListener('mousedown', e=>{drawing=true; last=getPos(e)});
+canvas.addEventListener('touchstart', e=>{drawing=true; last=getPos(e)},{passive:true});
+window.addEventListener('mouseup', ()=> drawing=false);
+canvas.addEventListener('touchend', ()=> drawing=false);
+canvas.addEventListener('mousemove', e=>{ if(!drawing) return; const p=getPos(e); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(p.x,p.y); ctx.stroke(); last=p; });
+canvas.addEventListener('touchmove', e=>{ if(!drawing) return; const p=getPos(e); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(p.x,p.y); ctx.stroke(); last=p; },{passive:true});
+document.getElementById('clear').onclick=()=> ctx.clearRect(0,0,canvas.width,canvas.height);
+</script></body></html>

@@ -1,0 +1,11 @@
+
+<!doctype html><html><head><meta charset='utf-8'><title>Rhythm Keys</title>
+<style>body{font-family:Arial;text-align:center;padding:12px} .kbd{display:flex;gap:8px;justify-content:center;margin-top:12px}</style></head><body>
+<h2>Rhythm Keys</h2><div>Press keys A S D F to play sounds</div>
+<div class="kbd"><div>A</div><div>S</div><div>D</div><div>F</div></div>
+<script>
+const ctx=new (window.AudioContext||window.webkitAudioContext)();
+const map={'A':261.6,'S':293.7,'D':329.6,'F':349.2};
+function play(freq){ const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='sine'; o.frequency.value=f; o.connect(g); g.connect(ctx.destination); g.gain.value=0.0001; o.start(); g.gain.exponentialRampToValueAtTime(0.2,ctx.currentTime+0.01); g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.5); setTimeout(()=>o.stop(),600); }
+window.addEventListener('keydown', e=>{ const k=e.key.toUpperCase(); if(map[k]) play(map[k]); });
+</script></body></html>

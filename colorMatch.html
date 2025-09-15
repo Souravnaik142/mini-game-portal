@@ -1,0 +1,12 @@
+
+<!doctype html><html><head><meta charset='utf-8'><title>Color Match</title>
+<style>body{font-family:Arial;text-align:center;padding:12px} .palette{display:flex;gap:8px;justify-content:center;margin-top:12px} .box{width:80px;height:80px;border-radius:8px;cursor:pointer;border:2px solid #fff}</style></head><body>
+<h2>Color Match</h2><div id="prompt">Click the color: <strong id="colName"></strong></div>
+<div class="palette" id="palette"></div>
+<button id="next">Next</button>
+<script>
+const colors=[{name:'Red',v:'#f44336'},{name:'Blue',v:'#2196f3'},{name:'Green',v:'#4caf50'},{name:'Yellow',v:'#ffeb3b'},{name:'Purple',v:'#9c27b0'}];
+const palette=document.getElementById('palette'), colName=document.getElementById('colName');
+function newRound(){ palette.innerHTML=''; const target=colors[Math.floor(Math.random()*colors.length)]; colName.textContent=target.name; const choices=colors.slice().sort(()=>Math.random()-0.5); choices.forEach(c=>{ const d=document.createElement('div'); d.className='box'; d.style.background=c.v; d.onclick=()=>{ if(c.name===target.name) alert('Correct!'); else alert('Try again!'); }; palette.appendChild(d); }); }
+document.getElementById('next').onclick=newRound; newRound();
+</script></body></html>
