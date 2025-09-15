@@ -1,0 +1,22 @@
+
+<!doctype html><html><head><meta charset="utf-8"><title>Shape Sorter</title>
+<style>body{font-family:Arial;text-align:center;padding:12px;background:#fff} .row{display:flex;gap:12px;justify-content:center;margin:8px} .shape{width:80px;height:80px;background:#4fc3f7;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;cursor:grab} .zone{width:90px;height:90px;border:2px dashed #cbd5e1;border-radius:10px;display:flex;align-items:center;justify-content:center}</style></head><body>
+<h2>Shape Sorter</h2>
+<div class="row" id="shapes">
+  <div class="shape" draggable="true" data-shape="circle">●</div>
+  <div class="shape" draggable="true" data-shape="square">■</div>
+  <div class="shape" draggable="true" data-shape="triangle">▲</div>
+</div>
+<div class="row">
+  <div class="zone" data-accept="circle">Circle</div>
+  <div class="zone" data-accept="square">Square</div>
+  <div class="zone" data-accept="triangle">Triangle</div>
+</div>
+<button id="reset">Reset</button>
+<script>
+const shapes=document.querySelectorAll('.shape'), zones=document.querySelectorAll('.zone');
+shapes.forEach(s=>{s.addEventListener('dragstart', e=> e.dataTransfer.setData('text/plain', s.dataset.shape));});
+zones.forEach(z=>{z.addEventListener('dragover', e=> e.preventDefault()); z.addEventListener('drop', e=>{ e.preventDefault(); const name=e.dataTransfer.getData('text/plain'); if(z.dataset.accept===name){ const el=document.querySelector('.shape[data-shape="'+name+'"]'); z.innerHTML=''; z.appendChild(el); el.style.cursor='default'; el.setAttribute('draggable','false'); z.style.borderColor='#4caf50'; checkWin(); } else { z.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:220}); } });});
+function checkWin(){ if(Array.from(zones).every(z=> z.querySelector('.shape'))) alert('Well done!'); }
+document.getElementById('reset').onclick=()=> location.reload();
+</script></body></html>

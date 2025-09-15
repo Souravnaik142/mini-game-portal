@@ -1,0 +1,10 @@
+
+<!doctype html><html><head><meta charset='utf-8'><title>Number Clicker</title>
+<style>body{font-family:Arial;text-align:center;padding:12px} .grid{display:grid;grid-template-columns:repeat(5,60px);gap:8px;justify-content:center}</style></head><body>
+<h2>Number Clicker</h2><p>Click numbers 1 to 10 in order</p>
+<div class="grid" id="grid"></div>
+<script>
+const nums=[1,2,3,4,5,6,7,8,9,10].sort(()=>Math.random()-0.5);
+const grid=document.getElementById('grid'); nums.forEach(n=>{ const b=document.createElement('button'); b.textContent=n; b.style.padding='12px'; b.onclick=()=> clickNum(n,b); grid.appendChild(b); });
+let need=1; function clickNum(n,btn){ if(n===need){ btn.disabled=true; need++; if(need>10) alert('Great!'); } else { btn.animate([{transform:'scale(1)'},{transform:'scale(1.05)'},{transform:'scale(1)'}],{duration:200}); } }
+</script></body></html>

@@ -1,0 +1,10 @@
+
+<!doctype html><html><head><meta charset='utf-8'><title>Memory Pair</title>
+<style>body{font-family:Arial;text-align:center;padding:12px} .grid{display:grid;grid-template-columns:repeat(4,80px);gap:8px;justify-content:center}</style></head><body>
+<h2>Memory Pair</h2><div class="grid" id="g"></div>
+<script>
+const letters=['A','A','B','B','C','C','D','D'];
+letters.sort(()=>Math.random()-0.5);
+const g=document.getElementById('g'); let first=null, second=null, lock=false, matched=0;
+letters.forEach((L,i)=>{ const b=document.createElement('button'); b.textContent='?'; b.style.padding='18px'; b.onclick=()=>{ if(lock||b.dataset.m) return; b.textContent=L; if(!first){first={b,L};} else{ second={b,L}; if(first.L===second.L){ first.b.dataset.m=1; second.b.dataset.m=1; matched+=2; if(matched===letters.length) alert('All matched!'); } else{ lock=true; setTimeout(()=>{ first.b.textContent='?'; second.b.textContent='?'; lock=false; first=second=null; },700); } first=null; } }; g.appendChild(b); });
+</script></body></html>

@@ -1,0 +1,13 @@
+
+<!doctype html><html><head><meta charset='utf-8'><title>Maze Runner</title>
+<style>body{font-family:Arial;text-align:center;padding:12px} #box{width:320px;height:320px;border:2px solid #e6eef1;margin:12px auto;position:relative;background:#fff}</style></head><body>
+<h2>Maze Runner</h2><div id="box"></div><p>Use arrow keys to move the blue square to the purple goal.</p>
+<script>
+const box=document.getElementById('box'); const s=320; const player=document.createElement('div'); player.style.width='24px'; player.style.height='24px'; player.style.background='#2e8b57'; player.style.position='absolute'; player.style.left='8px'; player.style.top='8px'; box.appendChild(player);
+// draw simple obstacles and goal
+const goal=document.createElement('div'); goal.style.width='40px'; goal.style.height='40px'; goal.style.background='#9c27b0'; goal.style.position='absolute'; goal.style.left='260px'; goal.style.top='260px'; box.appendChild(goal);
+const walls=[ {x:80,y:0,w:16,h:220},{x:160,y:100,w:16,h:220} ]; walls.forEach(w=>{ const d=document.createElement('div'); d.style.position='absolute'; d.style.left=w.x+'px'; d.style.top=w.y+'px'; d.style.width=w.w+'px'; d.style.height=w.h+'px'; d.style.background='#333'; box.appendChild(d); d.dataset.wall='1'; });
+function collide(x,y){ const rects=Array.from(box.querySelectorAll('div')).filter(d=>d.dataset.wall); for(const r of rects){ const rx=parseInt(r.style.left), ry=parseInt(r.style.top), rw=parseInt(r.style.width), rh=parseInt(r.style.height); if(x<rx+rw && x+24>rx && y<ry+rh && y+24>ry) return true; } return false; }
+window.addEventListener('keydown', e=>{ let x=parseInt(player.style.left), y=parseInt(player.style.top); if(e.key==='ArrowRight') x+=8; if(e.key==='ArrowLeft') x-=8; if(e.key==='ArrowUp') y-=8; if(e.key==='ArrowDown') y+=8; x=Math.max(0,Math.min(296,x)); y=Math.max(0,Math.min(296,y)); if(!collide(x,y)){ player.style.left=x+'px'; player.style.top=y+'px'; } // check goal
+ if(x+24>parseInt(goal.style.left) && y+24>parseInt(goal.style.top)) alert('You reached the goal!'); });
+</script></body></html>

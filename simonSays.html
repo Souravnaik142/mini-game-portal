@@ -1,0 +1,13 @@
+
+<!doctype html><html><head><meta charset='utf-8'><title>Simon Says</title>
+<style>body{font-family:Arial;text-align:center;padding:12px} .pads{display:flex;gap:8px;justify-content:center;margin-top:12px} .pad{width:80px;height:80px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;cursor:pointer}</style></head><body>
+<h2>Simon Says</h2><div class="pads"><div class="pad" id="p0" style="background:#f44336">1</div><div class="pad" id="p1" style="background:#ff9800">2</div><div class="pad" id="p2" style="background:#4caf50">3</div></div>
+<button id="start">Start</button>
+<script>
+const pads=[document.getElementById('p0'),document.getElementById('p1'),document.getElementById('p2')]; let seq=[], idx=0, playing=false;
+function flash(i){ pads[i].style.filter='brightness(1.5)'; setTimeout(()=>pads[i].style.filter='',300); }
+function playSeq(){ let i=0; playing=true; const t=setInterval(()=>{ flash(seq[i]); i++; if(i>=seq.length){ clearInterval(t); playing=false; idx=0; } },500); }
+document.getElementById('start').onclick=()=>{ seq.push(Math.floor(Math.random()*3)); playSeq(); };
+pads.forEach((p,i)=> p.onclick=()=>{ if(playing) return; if(seq[idx]===i){ flash(i); idx++; if(idx===seq.length){ alert('Good! Now next round'); } } else { alert('Try again'); } });
+</script>
+</body></html>

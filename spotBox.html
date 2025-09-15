@@ -1,0 +1,11 @@
+
+<!doctype html><html><head><meta charset='utf-8'><title>Spot the Box</title>
+<style>body{font-family:Arial;text-align:center;padding:12px} .row{display:flex;gap:12px;justify-content:center} .panel{width:260px;height:260px;border:2px solid #e6eef1;display:grid;grid-template-columns:repeat(5,1fr);grid-auto-rows:1fr;gap:4px;padding:4px} .cell{background:#b3e5fc;border-radius:4px;cursor:pointer}</style></head><body>
+<h2>Spot the Box</h2><p>Click the different colored box on the right panel</p>
+<div class="row"><div class="panel" id="a"></div><div class="panel" id="b"></div></div>
+<button id="new">New</button>
+<script>
+function newRound(){ const a=document.getElementById('a'), b=document.getElementById('b'); a.innerHTML=b.innerHTML=''; const base='#81d4fa'; const diff='#4fc3f7'; const diffIndex=Math.floor(Math.random()*25);
+ for(let i=0;i<25;i++){ const ca=document.createElement('div'); ca.className='cell'; ca.style.background=base; a.appendChild(ca); const cb=document.createElement('div'); cb.className='cell'; cb.style.background=(i===diffIndex?diff:base); cb.onclick=()=> { if(i===diffIndex) alert('Found!'); else alert('Try again'); }; b.appendChild(cb);} }
+document.getElementById('new').onclick=newRound; newRound();
+</script></body></html>
