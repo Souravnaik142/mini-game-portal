@@ -1,17 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kids Games Portal</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #f9d423, #ff4e50);
+      color: #333;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255,255,255,0.7);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      text-align: center;
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    }
+    .card a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1.1em;
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    .icon {
+      font-size: 40px;
+    }
+  </style>
 </head>
-<body style="font-family:Arial; padding:20px;">
-  <h1>Naik Skill Academy — Kids Games Portal</h1>
-  <p>Choose a game to play:</p>
-  <ul>
-    <li><a href="mousePaint.html">🎨 Mouse Paint</a></li>
-    <li><a href="typingBalloons.html">🎈 Typing Balloons</a></li>
-    <li><a href="buildComputer.html">🖥️ Build a Computer</a></li>
-  </ul>
+<body>
+  <header>
+    <h1>🎮 Kids Games Portal</h1>
+    <p>Learn and play with fun computer games!</p>
+  </header>
+
+  <div class="grid">
+    <div class="card"><div class="icon">✍️</div><a href="letterTracer.html">Letter Tracer</a></div>
+    <div class="card"><div class="icon">🔷</div><a href="shapeSorter.html">Shape Sorter</a></div>
+    <div class="card"><div class="icon">1️⃣</div><a href="numberClicker.html">Number Clicker</a></div>
+    <div class="card"><div class="icon">🎨</div><a href="colorMatch.html">Color Match</a></div>
+    <div class="card"><div class="icon">🎹</div><a href="rhythmKeys.html">Rhythm Keys</a></div>
+    <div class="card"><div class="icon">🧠</div><a href="memoryPair.html">Memory Pair</a></div>
+    <div class="card"><div class="icon">🟩</div><a href="simonSays.html">Simon Says</a></div>
+    <div class="card"><div class="icon">🏃</div><a href="mazeRunner.html">Maze Runner</a></div>
+    <div class="card"><div class="icon">🔳</div><a href="slidePuzzle.html">Slide Puzzle</a></div>
+    <div class="card"><div class="icon">🔍</div><a href="spotBox.html">Spot the Box</a></div>
+    <div class="card"><div class="icon">🎨</div><a href="mousePaint.html">Mouse Paint</a></div>
+    <div class="card"><div class="icon">🎈</div><a href="typingBalloons.html">Typing Balloons</a></div>
+    <div class="card"><div class="icon">🖥️</div><a href="buildComputer.html">Build a Computer</a></div>
+  </div>
 </body>
 </html>
